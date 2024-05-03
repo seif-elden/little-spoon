@@ -1,6 +1,6 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect , get_object_or_404
 from django.contrib.auth import authenticate, login, logout 
-from .forms import SignupForm, LoginForm
+from .forms import *
 from django.contrib.auth.decorators import login_required
 
 from .models import *
@@ -57,3 +57,43 @@ def myprofile(request):
     myr = Recipe.objects.filter(author=request.user)
 
     return render(request, 'profile.html' ,{"me":me , "myr":myr})
+
+
+@login_required
+def addrecipe(request):
+    if request.method =='POST':
+        form = addRecipe(request.POST , request.FILES)
+        if form.is_valid():
+            Recipe = form.save(commit=False)
+            Recipe.author = request.user
+            Recipe.save()
+        return redirect("myprofile")
+
+
+    form = addRecipe()
+    return render(request,"add_recipe.html" ,{"form":form})
+
+
+
+@login_required
+def deleterecipe(request,pk):
+    obj = get_object_or_404( Recipe ,pk = pk)
+    if request.method =="POST":
+        # delete object
+        obj.delete()
+        # after deleting redirect to 
+        # home page
+        return redirect("myprofile")
+
+    return render(request, "delete_recipe.html" )
+
+@login_required
+def viewrecipe(request,pk):
+    obj = get_object_or_404( Recipe ,pk = pk)
+    
+    return render(request, "view_recipe.html" , {"recipe":obj})
+
+
+
+
+

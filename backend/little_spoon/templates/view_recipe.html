@@ -1,0 +1,19 @@
+author : {{recipe.author}}<br>
+category : {{recipe.category}}<br>
+picture : <img src="/uploads/{{recipe.picture}}" alt="" style="width:300px;height:200px;"> <br>
+title : {{recipe.title}}<br>
+description : {{recipe.desc}}<br>
+duration : {{recipe.cook_time |date:"h:i" }}<br>
+ingredients : {{recipe.ingredients}}<br>
+procedure : {{recipe.procedure}}<br>
+created_at : {{recipe.created_at}}<br>
+
+{% if recipe.likecount %}
+    liked by {{recipe.likecount}} 
+{% else %}
+    no likes on this post
+{% endif %}<br>
+
+{% if request.user == recipe.author %}
+<a href="{% url 'deleterecipe' pk=recipe.pk %}" class="btn btn-danger">Delete Recipe</a>
+{% endif %}

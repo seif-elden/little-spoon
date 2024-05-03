@@ -1,0 +1,9 @@
+<div class="container">
+    <form method="post"   enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <br>
+        <button type="submit" class="btn btn-primary btn-block">post</button>
+        <a href="{% url 'myprofile' %}">Cancel </a>
+    </form>
+</div>

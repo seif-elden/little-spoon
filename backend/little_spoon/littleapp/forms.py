@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.utils.translation import gettext_lazy as _
+from .models import *
 
 
 class SignupForm(UserCreationForm):
@@ -18,3 +19,8 @@ class SignupForm(UserCreationForm):
 class LoginForm(forms.Form):
     username = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'username'}))
     password = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'password'}))
+
+class addRecipe(forms.ModelForm):
+    class Meta :
+        model = Recipe
+        fields = {'category','picture','title','desc','cook_time','ingredients','procedure'}

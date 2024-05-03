@@ -46,8 +46,11 @@ class Recipe(models.Model):
     procedure = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     likes = models.ManyToManyField(settings.AUTH_USER_MODEL , verbose_name=_(""), null=True , blank=True)
+
     def __str__(self):
         return self.title
+    def likecount(self):
+        return self.likes.count()
 
     
 
