@@ -20,7 +20,12 @@ class LoginForm(forms.Form):
     username = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'username'}))
     password = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'password'}))
 
-class addRecipe(forms.ModelForm):
+class Recipeform(forms.ModelForm):
     class Meta :
         model = Recipe
         fields = {'category','picture','title','desc','cook_time','ingredients','procedure'}
+
+class profileform(forms.ModelForm):
+    class Meta :
+        model = Profile
+        fields = {'avatar','bio'}

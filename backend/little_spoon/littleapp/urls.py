@@ -10,12 +10,17 @@ urlpatterns = [
     path('logout/', views.user_logout, name='logout'),
 
     path('myprofile/', views.myprofile, name='myprofile'),
-    # path('editprofile/', views.editprofile, name='editprofile'),
+    path('editprofile/<pk>/', views.editprofile, name='editprofile'),
 
     path('addrecipe/', views.addrecipe, name='addrecipe'),
     path('viewrecipe/<pk>/', views.viewrecipe, name='viewrecipe'),
     path('deleterecipe/<pk>/', views.deleterecipe, name='deleterecipe'),
-    # path('updaterecipe/', views.updaterecipe, name='updaterecipe'),
+    path('addbockmark/<pk>/', views.addbockmark, name='addbockmark'),
+    path('removebockmark/<pk>/', views.removebockmark, name='removebockmark'),
+    path('likerecipe/<pk>/', views.likerecipe, name='likerecipe'),
+    path('unlikerecipe/<pk>/', views.unlikerecipe, name='unlikerecipe'),
+
+    path('updaterecipe/<pk>/', views.updaterecipe, name='updaterecipe'),
 
 
 ]

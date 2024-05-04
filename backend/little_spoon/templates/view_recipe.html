@@ -14,6 +14,20 @@ created_at : {{recipe.created_at}}<br>
     no likes on this post
 {% endif %}<br>
 
+{% if booked %}
+<a href="{% url 'removebockmark' pk=recipe.pk %}" class="btn btn-danger">Delete bookmark</a>
+{% else %}
+<a href="{% url 'addbockmark' pk=recipe.pk %}" class="btn btn-danger">add bookmark</a>
+{% endif %}
+
+{% if liked %}
+<a href="{% url 'unlikerecipe' pk=recipe.pk %}" class="btn btn-danger">remove like</a>
+{% else %}
+<a href="{% url 'likerecipe' pk=recipe.pk %}" class="btn btn-danger">like</a>
+{% endif %}
+
+
+
 {% if request.user == recipe.author %}
 <a href="{% url 'deleterecipe' pk=recipe.pk %}" class="btn btn-danger">Delete Recipe</a>
 {% endif %}

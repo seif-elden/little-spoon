@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect , get_object_or_404
+from django.shortcuts import render, redirect , get_object_or_404 , HttpResponse
 from django.contrib.auth import authenticate, login, logout 
 from .forms import *
 from django.contrib.auth.decorators import login_required
@@ -11,7 +11,7 @@ from .models import *
 @login_required
 def mybookmarks(request):
     me = Profile.objects.get(user=request.user)
-    return render(request, 'mybookmarks.html',{"saved":me.bookmarks.all})
+    return render(request, 'mybookmarks.html',{"recipes":me.bookmarks.all})
 
 @login_required
 def explore(request):
@@ -62,7 +62,7 @@ def myprofile(request):
 @login_required
 def addrecipe(request):
     if request.method =='POST':
-        form = addRecipe(request.POST , request.FILES)
+        form = Recipeform(request.POST , request.FILES)
         if form.is_valid():
             Recipe = form.save(commit=False)
             Recipe.author = request.user
@@ -70,7 +70,7 @@ def addrecipe(request):
         return redirect("myprofile")
 
 
-    form = addRecipe()
+    form = Recipeform()
     return render(request,"add_recipe.html" ,{"form":form})
 
 
@@ -89,9 +89,73 @@ def deleterecipe(request,pk):
 
 @login_required
 def viewrecipe(request,pk):
-    obj = get_object_or_404( Recipe ,pk = pk)
+    r = get_object_or_404( Recipe ,pk=pk)
+    u = get_object_or_404( Profile ,user = request.user)
+    booked =  u.bookmarks.contains(r)    
+    liked =  r.likes.contains(request.user)  
+
+    return render(request, "view_recipe.html" , {"recipe":r , "booked":booked , "liked":liked})
+
+@login_required
+def addbockmark(request,pk):
+    r = get_object_or_404( Recipe ,pk=pk)
+    u = get_object_or_404( Profile ,user = request.user)
+    u.bookmarks.add(r)
     
-    return render(request, "view_recipe.html" , {"recipe":obj})
+    return redirect("viewrecipe",pk=pk)
+
+@login_required
+def removebockmark(request,pk):
+    r = get_object_or_404( Recipe ,pk=pk)
+    u = get_object_or_404( Profile ,user = request.user)
+    u.bookmarks.remove(r)
+    
+    return redirect("viewrecipe",pk=pk)
+
+@login_required
+def likerecipe(request,pk):
+    r = get_object_or_404( Recipe ,pk=pk)
+    r.likes.add(request.user)
+    
+    return redirect("viewrecipe",pk=pk)
+
+@login_required
+def unlikerecipe(request,pk):
+    r = get_object_or_404( Recipe ,pk=pk)
+    r.likes.remove(request.user)
+    
+    return redirect("viewrecipe",pk=pk)
+
+
+# update view for details
+def updaterecipe(request, pk):
+
+    obj = get_object_or_404(Recipe, pk = pk)
+    form = Recipeform(request.POST or None, instance = obj)
+ 
+  
+    if form.is_valid():
+        form.save()
+        return redirect("myprofile")
+ 
+    # add form dictionary to context
+ 
+    return render(request, "editrecipe.html", {"form":form})
+
+def editprofile(request, pk):
+
+    obj = get_object_or_404(Profile, user = request.user)
+    form = profileform(request.POST or None, instance = obj)
+ 
+  
+    if form.is_valid():
+        form.save()
+        return redirect("myprofile")
+ 
+    # add form dictionary to context
+ 
+    return render(request, "editprofile.html", {"form":form})
+
 
 
 
