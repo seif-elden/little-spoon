@@ -1,33 +1,120 @@
-author : {{recipe.author}}<br>
-category : {{recipe.category}}<br>
-picture : <img src="/uploads/{{recipe.picture}}" alt="" style="width:300px;height:200px;"> <br>
-title : {{recipe.title}}<br>
-description : {{recipe.desc}}<br>
-duration : {{recipe.cook_time |date:"h:i" }}<br>
-ingredients : {{recipe.ingredients}}<br>
-procedure : {{recipe.procedure}}<br>
-created_at : {{recipe.created_at}}<br>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ recipe.title }}</title>
+    <style>
+        body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
 
-{% if recipe.likecount %}
-    liked by {{recipe.likecount}} 
-{% else %}
-    no likes on this post
-{% endif %}<br>
+.container {
+    width: 80%;
+    margin: 20px auto;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    border-radius: 8px;
+}
 
-{% if booked %}
-<a href="{% url 'removebockmark' pk=recipe.pk %}" class="btn btn-danger">Delete bookmark</a>
-{% else %}
-<a href="{% url 'addbockmark' pk=recipe.pk %}" class="btn btn-danger">add bookmark</a>
-{% endif %}
+.title {
+    font-size: 24px;
+    margin-bottom: 20px;
+    text-align: center;
+}
 
-{% if liked %}
-<a href="{% url 'unlikerecipe' pk=recipe.pk %}" class="btn btn-danger">remove like</a>
-{% else %}
-<a href="{% url 'likerecipe' pk=recipe.pk %}" class="btn btn-danger">like</a>
-{% endif %}
+.recipe-details {
+    display: flex;
+    gap: 20px;
+}
 
+.recipe-image {
+    width: 300px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 8px;
+}
 
+.recipe-info {
+    flex: 1;
+}
 
-{% if request.user == recipe.author %}
-<a href="{% url 'deleterecipe' pk=recipe.pk %}" class="btn btn-danger">Delete Recipe</a>
-{% endif %}
+.recipe-info p {
+    margin: 10px 0;
+}
+
+.actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 20px;
+}
+
+.btn {
+    display: inline-block;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    color: #fff;
+    border-radius: 4px;
+}
+
+.btn-danger {
+    background-color: #d9534f;
+}
+
+.btn-primary {
+    background-color: #0275d8;
+}
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="title">{{ recipe.title }}</h1>
+        <div class="recipe-details">
+            <img class="recipe-image" src="/uploads/{{ recipe.picture }}" alt="{{ recipe.title }}">
+            <div class="recipe-info">
+                <p><strong>Author:</strong> <br>{{ recipe.author }}</p>
+                <p><strong>Category:</strong> <br>{{ recipe.category }}</p>
+                <p><strong>Description:</strong> <br>{{ recipe.desc }}</p>
+                <p><strong>Cook Time:</strong> <br>{{ recipe.cook_time | date:"h:i" }}</p>
+                <p><strong>Ingredients:</strong><br> {{ recipe.ingredients }}</p>
+                <p><strong>Procedure:</strong> <br>{{ recipe.procedure }}</p>
+                <p><strong>Created At:</strong><br> {{ recipe.created_at }}</p>
+                <p>
+                    <strong>Likes:</strong> 
+                    {% if recipe.likecount %}
+                        liked by {{ recipe.likecount }}
+                    {% else %}
+                        no likes on this post
+                    {% endif %}
+                </p>
+                <div class="actions">
+                    {% if booked %}
+                        <a href="{% url 'removebockmark' pk=recipe.pk %}" class="btn btn-danger">Delete Bookmark</a>
+                    {% else %}
+                        <a href="{% url 'addbockmark' pk=recipe.pk %}" class="btn btn-primary">Add Bookmark</a>
+                    {% endif %}
+                    
+                    {% if liked %}
+                        <a href="{% url 'unlikerecipe' pk=recipe.pk %}" class="btn btn-danger">Remove Like</a>
+                    {% else %}
+                        <a href="{% url 'likerecipe' pk=recipe.pk %}" class="btn btn-primary">Like</a>
+                    {% endif %}
+                    
+                    {% if request.user == recipe.author %}
+                        <a href="{% url 'deleterecipe' pk=recipe.pk %}" class="btn btn-danger">Delete Recipe</a>
+                        <a href="{% url 'updaterecipe' pk=recipe.pk %}" class="btn btn-danger">edit Recipe</a>
+
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

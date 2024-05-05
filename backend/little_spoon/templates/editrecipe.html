@@ -1,13 +1,123 @@
-<div class="main">
-    <!-- Create a Form -->
-    <form method="POST">
-        <!-- Security token by Django -->
-        {% csrf_token %}
- 
-        <!-- form as paragraph -->
-        {{ form.as_p }}
- 
-        <input type="submit" value="Update">
-    </form>
- 
-</div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Recipe - {{ recipe.title }}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .container {
+            width: 80%;
+            margin: 20px auto;
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            border-radius: 8px;
+        }
+        
+        .title {
+            font-size: 24px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .recipe-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        label {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        input, textarea, select {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            width: 100%;
+        }
+        
+        textarea {
+            resize: vertical;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            color: #fff;
+            border-radius: 4px;
+            cursor: pointer;
+            border: none;
+            margin-top: 10px;
+            width: 100px;
+        }
+        
+        .btn-primary {
+            background-color: #0275d8;
+        }
+        
+        .btn-secondary {
+            background-color: #6c757d;
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="title">Edit Recipe: {{ recipe.title }}</h1>
+        <form method="post" enctype="multipart/form-data" class="recipe-form">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="id_title">Title:</label>
+                {{ form.title }}
+            </div>
+            <div class="form-group">
+                <label for="id_author">Author:</label>
+                {{ form.author }}
+            </div>
+            <div class="form-group">
+                <label for="id_category">Category:</label>
+                {{ form.category }}
+            </div>
+            <div class="form-group">
+                <label for="id_picture">Picture:</label>
+                {{ form.picture }}
+            </div>
+            <div class="form-group">
+                <label for="id_desc">Description:</label>
+                {{ form.desc }}
+            </div>
+            <div class="form-group">
+                <label for="id_cook_time">Cook Time:</label>
+                {{ form.cook_time }}
+            </div>
+            <div class="form-group">
+                <label for="id_ingredients">Ingredients:</label>
+                {{ form.ingredients }}
+            </div>
+            <div class="form-group">
+                <label for="id_procedure">Procedure:</label>
+                {{ form.procedure }}
+            </div>
+            <button type="submit" class="btn btn-primary">Save</button>
+            <a href="{% url 'viewrecipe' pk=pk %}" class="btn btn-secondary">Cancel</a>
+        </form>
+    </div>
+</body>
+</html>

@@ -8,18 +8,6 @@ from .models import *
 
 
 # Create your views here.
-@login_required
-def mybookmarks(request):
-    me = Profile.objects.get(user=request.user)
-    return render(request, 'mybookmarks.html',{"recipes":me.bookmarks.all})
-
-@login_required
-def explore(request):
-    recipes = Recipe.objects.all()
-    return render(request, 'explore.html' , {"recipes":recipes})
-
-
-
 # signup page
 def user_signup(request):
     if request.method == 'POST':
@@ -52,12 +40,21 @@ def user_logout(request):
     return redirect('login')
 
 @login_required
+def mybookmarks(request):
+    me = Profile.objects.get(user=request.user)
+    return render(request, 'mybookmarks.html',{"recipes":me.bookmarks.all})
+
+@login_required
+def explore(request):
+    recipes = Recipe.objects.all()
+    return render(request, 'explore.html' , {"recipes":recipes})
+
+@login_required
 def myprofile(request):
     me = Profile.objects.get(user=request.user)
     myr = Recipe.objects.filter(author=request.user)
 
     return render(request, 'profile.html' ,{"me":me , "myr":myr})
-
 
 @login_required
 def addrecipe(request):
@@ -72,8 +69,6 @@ def addrecipe(request):
 
     form = Recipeform()
     return render(request,"add_recipe.html" ,{"form":form})
-
-
 
 @login_required
 def deleterecipe(request,pk):
@@ -126,8 +121,7 @@ def unlikerecipe(request,pk):
     
     return redirect("viewrecipe",pk=pk)
 
-
-# update view for details
+@login_required
 def updaterecipe(request, pk):
 
     obj = get_object_or_404(Recipe, pk = pk)
@@ -140,12 +134,13 @@ def updaterecipe(request, pk):
  
     # add form dictionary to context
  
-    return render(request, "editrecipe.html", {"form":form})
+    return render(request, "editrecipe.html", {"form":form , "pk":pk})
 
-def editprofile(request, pk):
+@login_required
+def editprofile(request):
 
     obj = get_object_or_404(Profile, user = request.user)
-    form = profileform(request.POST or None, instance = obj)
+    form = profileform(request.POST or None , request.FILES or None, instance = obj)
  
   
     if form.is_valid():

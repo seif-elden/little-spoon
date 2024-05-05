@@ -10,7 +10,7 @@ urlpatterns = [
     path('logout/', views.user_logout, name='logout'),
 
     path('myprofile/', views.myprofile, name='myprofile'),
-    path('editprofile/<pk>/', views.editprofile, name='editprofile'),
+    path('editprofile/', views.editprofile, name='editprofile'),
 
     path('addrecipe/', views.addrecipe, name='addrecipe'),
     path('viewrecipe/<pk>/', views.viewrecipe, name='viewrecipe'),
