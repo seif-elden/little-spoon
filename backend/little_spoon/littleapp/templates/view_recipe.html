@@ -81,7 +81,7 @@
         <div class="recipe-details">
             <img class="recipe-image" src="/uploads/{{ recipe.picture }}" alt="{{ recipe.title }}">
             <div class="recipe-info">
-                <p><strong>Author:</strong> <br>{{ recipe.author }}</p>
+                <p><strong>Author:</strong> <a href="{% url 'viewprofile' username=recipe.author %}"><br>{{ recipe.author }}</a></p>
                 <p><strong>Category:</strong> <br>{{ recipe.category }}</p>
                 <p><strong>Description:</strong> <br>{{ recipe.desc }}</p>
                 <p><strong>Cook Time:</strong> <br>{{ recipe.cook_time | date:"h:i" }}</p>

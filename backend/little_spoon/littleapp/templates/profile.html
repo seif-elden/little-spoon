@@ -99,14 +99,16 @@
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="{% url 'home'%}" ><i class="fa fa-home" aria-hidden="true"></i></a></li> 
-                            <li class="breadcrumb-item " aria-current="page">My recipes </li>
+                            <li class="breadcrumb-item " aria-current="page"> Recipes </li>
                         </ol>
                     </nav>
                 </div>
+                {% if request.user == me.user %}
                 <div class="float-right">         
                     <a href="{% url 'addrecipe' %}"  type="button" class="btn btn-outline-primary" >add recipe</a>
                     <a href="{% url 'editprofile'%}"  type="button" class="btn btn-outline-primary" >edit profile</a>
                 </div>
+                {% endif %}
             </div>
         </div>
     </div>

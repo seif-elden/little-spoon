@@ -42,17 +42,31 @@ def user_logout(request):
 @login_required
 def mybookmarks(request):
     me = Profile.objects.get(user=request.user)
-    return render(request, 'mybookmarks.html',{"recipes":me.bookmarks.all})
+    try:
+        x = me.bookmarks.filter(title__contains= request.GET["search"])
+    except:
+        x = me.bookmarks.all        
+    return render(request, 'mybookmarks.html',{"recipes":x})
 
 @login_required
 def explore(request):
-    recipes = Recipe.objects.all()
+    try:
+        recipes = Recipe.objects.filter(title__contains= request.GET["search"])
+    except:
+        recipes = Recipe.objects.all()
     return render(request, 'explore.html' , {"recipes":recipes})
 
 @login_required
 def myprofile(request):
     me = Profile.objects.get(user=request.user)
     myr = Recipe.objects.filter(author=request.user)
+
+    return render(request, 'profile.html' ,{"me":me , "myr":myr})
+
+@login_required
+def viewprofile(request,username):
+    me = Profile.objects.get(user__username=username)
+    myr = Recipe.objects.filter(author__username=username)
 
     return render(request, 'profile.html' ,{"me":me , "myr":myr})
 
